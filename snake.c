@@ -40,7 +40,7 @@ void map()
     }
 
     attron(COLOR_PAIR(3));
-    mvprintw(10, 70, "Press any key to start: ");
+    mvprintw(10, 69, "Press any key to start... ");
     refresh();
 
 }

@@ -1,8 +1,13 @@
 #include <stdio.h>
 #include <curses.h>
 
+void sig()
+{
+    
+}
+
 int main(){
-    printf("hi");
+    
     
     return 0;
 }

@@ -4,6 +4,12 @@
 #include <unistd.h>
 
 
+void character()
+{
+    int snake_length = 5;
+
+}
+
 void map()
 {
     clear();
@@ -12,7 +18,6 @@ void map()
     init_pair(1, COLOR_RED, COLOR_BLACK);
     init_pair(2, COLOR_BLACK, COLOR_BLACK);
     init_pair(3, COLOR_WHITE, COLOR_BLACK);
-    
     
     int x, y, j, i;
     attron(COLOR_PAIR(2));
@@ -52,7 +57,6 @@ void startup(int signum)
     // sleep(3);
     map();
 
-
 }
 
 
@@ -64,7 +68,6 @@ int main(){
     
     signal(SIGALRM, startup);
     alarm(1);
-
 
     getchar();
     endwin();

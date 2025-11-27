@@ -17,29 +17,43 @@ void character()
     cbreak();
     nodelay(stdscr, TRUE);
     curs_set(0);
-    
-    mvprintw(10, 69, " ");
+
     mvprintw(9, 69, "Use WASD to move");
-    mvprintw(10, 69, "@");
+    mvprintw(y, x, "@");
+    refresh();
+
     while(1){
-        char input = getch();
-        switch(input)
-        {
-            case 'w':  
-                y--;
-                break;
-            case 's':
-                y++;
-                break;
-            case 'a':
-                x--;
-                break;
-            case 'd':
-                x++;
-                break;
-            case 'q':
-                endwin();
-                exit(0);
+        int input = getch();
+        if(input != ERR){
+            switch(input)
+            {
+                case 'w':
+                case 'W':  
+                    y--;
+                    break;
+                case 's':
+                case 'S':
+                    y++;
+                    break;
+                case 'a':
+                case 'A':
+                    x--;
+                    break;
+                case 'd':
+                case 'D':
+                    x++;
+                    break;
+                case 'q':
+                case 'Q':
+                    endwin();
+                    exit(0);
+            }
+            
+            mvprintw(prev_y, prev_x, " ");
+            mvprintw(y, x, "@");
+            refresh();
+            prev_x = x;
+            prev_y = y;
         }
     }
 }

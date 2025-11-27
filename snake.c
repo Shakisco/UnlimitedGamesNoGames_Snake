@@ -2,12 +2,38 @@
 #include <curses.h>
 #include <signal.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 
 void character()
 {
+    int x = 69;
+    int y = 10;
     int snake_length = 5;
-
+    mvprintw(10, 69, " ");
+    mvprintw(9, 69, "Use WASD to move");
+    mvprintw(10, 69, "@");
+    while(1){
+        char input = getch();
+        switch(input)
+        {
+            case 'w':  
+                y--;
+                break;
+            case 's':
+                y++;
+                break;
+            case 'a':
+                x--;
+                break;
+            case 'd':
+                x++;
+                break;
+            case 'q':
+                endwin();
+                exit(0);
+        }
+    }
 }
 
 void map()
@@ -46,31 +72,31 @@ void map()
 
     attron(COLOR_PAIR(3));
     mvprintw(10, 69, "Press any key to start... ");
-    refresh();
-
+    
+    char start = getch();
+    if(start)
+    {
+        character();
+    }
 }
 
-void startup(int signum)
+void startup()
 {
+    clear();
     mvprintw(5, 5, "Starting....");
     refresh();
-    // sleep(3);
+    sleep(1);
     map();
 
 }
-
-
 
 int main(){
 
     initscr();
     clear();
     
-    signal(SIGALRM, startup);
-    alarm(1);
+    startup();
 
-    getchar();
     endwin();
-
     return 0;
 }

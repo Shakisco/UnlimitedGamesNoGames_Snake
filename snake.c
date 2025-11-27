@@ -48,13 +48,14 @@ void character()
                     endwin();
                     exit(0);
             }
-            
+
             mvprintw(prev_y, prev_x, " ");
             mvprintw(y, x, "@");
             refresh();
             prev_x = x;
             prev_y = y;
         }
+        usleep(30000);
     }
 }
 

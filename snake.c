@@ -11,14 +11,13 @@ void character()
     int y = 10;
     int prev_x;
     int prev_y;
-    int snake_length = 5;
 
     noecho();
     cbreak();
     nodelay(stdscr, TRUE);
     curs_set(0);
 
-    mvprintw(10, 69, "                     ");
+    mvprintw(10, 69, "                         ");
     mvprintw(9, 69, "                     "); 
     mvprintw(y, x, "@");
     refresh();

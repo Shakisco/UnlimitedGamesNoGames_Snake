@@ -61,21 +61,12 @@ void character()
             x += dx;
             y += dy;
 
-            // if(x < 61) 
-            //     x = 61;
-            // if(x > 101) 
-            //     x = 101;
-            // if(y < 1) 
-            //     y = 1;
-            // if(y > 19) 
-            //     y = 19;
-
             if(x <= 60 || x >= 102 || y <= 0 || y >= 20){
                 mvprintw(prev_y, prev_x, " ");
                 refresh();
 
                 nodelay(stdscr, FALSE);
-                mvprintw(10, 69, "Game Over! Press any key to exit.");
+                mvprintw(10, 66, "Game Over! Press any key to exit.");
                 getch();
                 refresh();
 
@@ -115,14 +106,14 @@ void map()
     {
         mvprintw(0, x + 1, "-");
         mvprintw(20, x + 1, "-");
-        usleep(80000);
+        usleep(60000);
         refresh();
     }
     for(y = 0; y <= 20; y++)
     {
         mvprintw(y, 60, "|");
         mvprintw(y, 102, "|");
-        usleep(80000);
+        usleep(60000);
         refresh();
     }
 

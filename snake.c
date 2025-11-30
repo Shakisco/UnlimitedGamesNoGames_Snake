@@ -20,7 +20,7 @@ void character()
     int prev_x = x;
     int prev_y = y;
 
-    int dx = 0;
+    int dx = 1;
     int dy = 0;
 
     noecho();
@@ -66,6 +66,9 @@ void character()
                 refresh();
 
                 nodelay(stdscr, FALSE);
+                start_color();
+                init_pair(4, COLOR_YELLOW, COLOR_BLACK);
+                attron(COLOR_PAIR(4));
                 mvprintw(10, 66, "Game Over! Press any key to exit.");
                 getch();
                 refresh();
@@ -79,7 +82,7 @@ void character()
             mvprintw(y, x, "@");
             refresh();
         }
-        usleep(80000);
+        usleep(30000);
     }
 }
 

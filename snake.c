@@ -3,23 +3,34 @@
 #include <signal.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <time.h>
 
+void apple()
+{
+    int x = (rand() % 41) + 61;
+    int y = (rand() % 19) + 1;
+    mvprintw(y, x, "A");
+    refresh();
+}
 
 void character()
 {
     int x = 69;
     int y = 10;
-    int prev_x;
-    int prev_y;
+    int prev_x = x;
+    int prev_y = y;
+
+    int dx = 0;
+    int dy = 0;
 
     noecho();
     cbreak();
     nodelay(stdscr, TRUE);
     curs_set(0);
 
+    mvprintw(prev_y, prev_x, "@");
     mvprintw(10, 69, "                         ");
     mvprintw(9, 69, "                     "); 
-    mvprintw(y, x, "@");
     refresh();
 
     while(1){
@@ -27,35 +38,34 @@ void character()
         if(input != ERR){
             switch(input)
             {
-                case 'w':
-                case 'W':  
-                    y--;
+                case 'w': case 'W':
+                    dx = 0, dy = -1;
                     break;
-                case 's':
-                case 'S':
-                    y++;
+                case 's': case 'S':
+                    dx = 0, dy = 1;
                     break;
-                case 'a':
-                case 'A':
-                    x--;
+                case 'a': case 'A':
+                    dx = -1, dy = 0;
                     break;
-                case 'd':
-                case 'D':
-                    x++;
+                case 'd': case 'D':
+                    dx = 1, dy = 0;
                     break;
-                case 'q':
-                case 'Q':
+                case 'q': case 'Q':
                     endwin();
                     exit(0);
             }
 
+            prev_x = x;
+            prev_y = y;
+
+            x += dx;
+            y += dy;
+
             mvprintw(prev_y, prev_x, " ");
             mvprintw(y, x, "@");
             refresh();
-            prev_x = x;
-            prev_y = y;
         }
-        usleep(30000);
+        usleep(80000);
     }
 }
 
@@ -101,6 +111,7 @@ void map()
     char start = getch();
     if(start)
     {
+        apple();
         character();
     }
 }
@@ -120,6 +131,7 @@ int main(){
     initscr();
     clear();
     
+    srand((unsigned int)time(NULL));
     startup();
 
     endwin();

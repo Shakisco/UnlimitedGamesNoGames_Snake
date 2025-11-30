@@ -81,7 +81,7 @@ void character()
         x += dx;
         y += dy;
 
-        if(x <= 60 || x >= 102 || y <= 0 || y >= 40){
+        if(x <= 60 || x >= 102 || y <= 0 || y >= 20){
             fail(prev_y, prev_x);
         }
 
@@ -90,7 +90,14 @@ void character()
         refresh();
 
         
-        usleep(80000);
+        if(dy != 0)
+        {
+            usleep(160000);
+        }
+        else
+        {
+            usleep(100000);
+        }
     }
 }
 
@@ -107,20 +114,20 @@ void map()
     attron(COLOR_PAIR(2));
     for(j = 60; j <= 100; j++)
     {
-        for(i = 0; i <= 40; i++)
+        for(i = 0; i <= 20; i++)
         {
             mvprintw(i, j + 1, " ");
         }
     }
     attron(COLOR_PAIR(1));
-    for(x = 59; x <= 100; x++)
+    for(x = 60; x <= 100; x++)
     {
-        mvprintw(0, x + 1, "__");
-        mvprintw(41, x + 1, "__");
+        mvprintw(0, x + 1, "-");
+        mvprintw(20, x + 1, "-");
         usleep(60000);
         refresh();
     }
-    for(y = 1; y <= 40; y++)
+    for(y = 0; y <= 20; y++)
     {
         mvprintw(y, 60, "|");
         mvprintw(y, 102, "|");

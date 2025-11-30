@@ -113,7 +113,7 @@ void map()
         }
     }
     attron(COLOR_PAIR(1));
-    for(x = 60; x <= 100; x++)
+    for(x = 59; x <= 100; x++)
     {
         mvprintw(0, x + 1, "__");
         mvprintw(41, x + 1, "__");

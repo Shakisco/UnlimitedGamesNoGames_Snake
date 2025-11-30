@@ -41,19 +41,15 @@ void character()
             {
                 case 'w': case 'W':
                     dx = 0, dy = -1;
-                    usleep(160000);
                     break;
                 case 's': case 'S':
                     dx = 0, dy = 1;
-                    usleep(160000);
                     break;
                 case 'a': case 'A':
                     dx = -1, dy = 0;
-                    usleep(80000);
                     break;
                 case 'd': case 'D':
                     dx = 1, dy = 0;
-                    usleep(80000);
                     break;
                 case 'q': case 'Q':
                     endwin();
@@ -87,7 +83,7 @@ void character()
         mvprintw(y, x, "@");
         refresh();
 
-        usleep(80000);
+        usleep(160000);
     }
 }
 

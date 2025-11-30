@@ -13,6 +13,25 @@ void apple()
     refresh();
 }
 
+void fail(int prev_y, int prev_x)
+{
+    
+    mvprintw(prev_y, prev_x, " ");
+    refresh();
+
+    nodelay(stdscr, FALSE);
+    start_color();
+    init_pair(4, COLOR_YELLOW, COLOR_BLACK);
+    attron(COLOR_PAIR(4));
+    mvprintw(10, 66, "Game Over! Press any key to exit.");
+    refresh();
+
+    getch();
+    endwin();
+    exit(0);
+    
+}
+
 void character()
 {
     int x = 69;
@@ -64,19 +83,7 @@ void character()
         y += dy;
 
         if(x <= 60 || x >= 102 || y <= 0 || y >= 20){
-            mvprintw(prev_y, prev_x, " ");
-            refresh();
-
-            nodelay(stdscr, FALSE);
-            start_color();
-            init_pair(4, COLOR_YELLOW, COLOR_BLACK);
-            attron(COLOR_PAIR(4));
-            mvprintw(10, 66, "Game Over! Press any key to exit.");
-            refresh();
-
-            getch();
-            endwin();
-            exit(0);
+            fail(prev_y, prev_x);
         }
 
         mvprintw(prev_y, prev_x, " ");

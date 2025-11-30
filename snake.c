@@ -54,8 +54,7 @@ void character()
 
     while(1){
         int input = getch();
-        if(input != ERR)
-        {
+        
             switch(input)
             {
                 case 'w': case 'W':
@@ -74,7 +73,7 @@ void character()
                     endwin();
                     exit(0);
             }
-        }
+        
 
         prev_x = x;
         prev_y = y;
@@ -82,7 +81,7 @@ void character()
         x += dx;
         y += dy;
 
-        if(x <= 60 || x >= 102 || y <= 0 || y >= 20){
+        if(x <= 60 || x >= 102 || y <= 0 || y >= 40){
             fail(prev_y, prev_x);
         }
 
@@ -90,7 +89,8 @@ void character()
         mvprintw(y, x, "@");
         refresh();
 
-        usleep(160000);
+        
+        usleep(80000);
     }
 }
 
@@ -107,7 +107,7 @@ void map()
     attron(COLOR_PAIR(2));
     for(j = 60; j <= 100; j++)
     {
-        for(i = 0; i <= 20; i++)
+        for(i = 0; i <= 40; i++)
         {
             mvprintw(i, j + 1, " ");
         }
@@ -115,12 +115,12 @@ void map()
     attron(COLOR_PAIR(1));
     for(x = 60; x <= 100; x++)
     {
-        mvprintw(0, x + 1, "-");
-        mvprintw(20, x + 1, "-");
+        mvprintw(0, x + 1, "__");
+        mvprintw(41, x + 1, "__");
         usleep(60000);
         refresh();
     }
-    for(y = 0; y <= 20; y++)
+    for(y = 1; y <= 40; y++)
     {
         mvprintw(y, 60, "|");
         mvprintw(y, 102, "|");

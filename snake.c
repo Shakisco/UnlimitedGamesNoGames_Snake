@@ -35,7 +35,8 @@ void character()
 
     while(1){
         int input = getch();
-        if(input != ERR){
+        if(input != ERR)
+        {
             switch(input)
             {
                 case 'w': case 'W':
@@ -54,34 +55,35 @@ void character()
                     endwin();
                     exit(0);
             }
-
-            prev_x = x;
-            prev_y = y;
-
-            x += dx;
-            y += dy;
-
-            if(x <= 60 || x >= 102 || y <= 0 || y >= 20){
-                mvprintw(prev_y, prev_x, " ");
-                refresh();
-
-                nodelay(stdscr, FALSE);
-                start_color();
-                init_pair(4, COLOR_YELLOW, COLOR_BLACK);
-                attron(COLOR_PAIR(4));
-                mvprintw(10, 66, "Game Over! Press any key to exit.");
-                refresh();
-
-                getch();
-                endwin();
-                exit(0);
-            }
-
-            mvprintw(prev_y, prev_x, " ");
-            mvprintw(y, x, "@");
-            refresh();
         }
-        usleep(30000);
+
+        prev_x = x;
+        prev_y = y;
+
+        x += dx;
+        y += dy;
+
+        if(x <= 60 || x >= 102 || y <= 0 || y >= 20){
+            mvprintw(prev_y, prev_x, " ");
+            refresh();
+
+            nodelay(stdscr, FALSE);
+            start_color();
+            init_pair(4, COLOR_YELLOW, COLOR_BLACK);
+            attron(COLOR_PAIR(4));
+            mvprintw(10, 66, "Game Over! Press any key to exit.");
+            refresh();
+
+            getch();
+            endwin();
+            exit(0);
+        }
+
+        mvprintw(prev_y, prev_x, " ");
+        mvprintw(y, x, "@");
+        refresh();
+
+        usleep(80000);
     }
 }
 

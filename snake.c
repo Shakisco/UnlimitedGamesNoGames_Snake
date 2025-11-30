@@ -61,6 +61,11 @@ void character()
             x += dx;
             y += dy;
 
+            if(x < 61) x = 61;
+            if(x > 101) x = 101;
+            if(y < 1) y = 1;
+            if(y > 19) y = 19;
+            
             mvprintw(prev_y, prev_x, " ");
             mvprintw(y, x, "@");
             refresh();

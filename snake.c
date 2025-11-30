@@ -70,7 +70,6 @@ void character()
                 init_pair(4, COLOR_YELLOW, COLOR_BLACK);
                 attron(COLOR_PAIR(4));
                 mvprintw(10, 66, "Game Over! Press any key to exit.");
-                getch();
                 refresh();
 
                 getch();

@@ -6,7 +6,7 @@
 #include <time.h>
 
 #define buffer 100
-#define MAX_SNAKE 20
+#define MAX_SNAKE 40
 
 int apple_x = -1;
 int apple_y = -1;
@@ -33,7 +33,7 @@ void scoreboard(int counter)
 {
     mvprintw(0, 60, "Score to beat: 40");
     mvprintw(0, 94, "Score: %d", counter);
-    if(counter == 40)
+    if(counter == MAX_SNAKE)
     {
         winScreen();
     }

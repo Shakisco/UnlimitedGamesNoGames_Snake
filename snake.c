@@ -10,13 +10,22 @@
 
 int apple_x = -1;
 int apple_y = -1;
+int counter = 0;
+
+void scoreboard(int counter)
+{
+    mvprintw(0, 90, "Score: %d", counter);
+    refresh();
+}
 
 // Author: Matthew; Function to spawn an apple at a random position within the game boundaries
 void apple()
 {
+
     apple_x = (rand() % 41) + 61;
-    apple_y = (rand() % 19) + 1;
+    apple_y = (rand() % 20) + 1;
     mvprintw(apple_y, apple_x, "A");
+
     refresh();
 }
 
@@ -64,6 +73,7 @@ void shift_snake(int seg_x[], int seg_y[], int *length, int dx, int dy)
 // Author: Shakil; Function to initialize and control the snake movement, input, and collision
 void character()
 {
+
     int x = 69;
     int y = 10;
     
@@ -119,6 +129,8 @@ void character()
         if(seg_x[0] == apple_x && seg_y[0] == apple_y)
         {
             apple();
+            counter++;
+            scoreboard(counter);
         }
 
         if(seg_x[0] + dx <= 60 || seg_x[0] + dx >= 102 || seg_y[0] + dy <= 0 || seg_y[0] + dy >= 20){
@@ -152,7 +164,7 @@ void map()
     attron(COLOR_PAIR(2));
     for(j = 60; j <= 100; j++)
     {
-        for(i = 0; i <= 20; i++)
+        for(i = 1; i <= 21; i++)
         {
             mvprintw(i, j + 1, " ");
         }
@@ -160,12 +172,12 @@ void map()
     attron(COLOR_PAIR(1));
     for(x = 60; x <= 100; x++)
     {
-        mvprintw(0, x + 1, "-");
-        mvprintw(20, x + 1, "-");
+        mvprintw(1, x + 1, "-");
+        mvprintw(21, x + 1, "-");
         usleep(60000);
         refresh();
     }
-    for(y = 0; y <= 20; y++)
+    for(y = 1; y <= 21; y++)
     {
         mvprintw(y, 60, "|");
         mvprintw(y, 102, "|");
@@ -181,6 +193,7 @@ void map()
     char start = getch();
     if(start)
     {
+        scoreboard(counter);
         apple();
         character();
     }

@@ -8,9 +8,13 @@
 #define buffer 100
 #define MAX_SNAKE 40
 
-int food_x = -1;
-int food_y = -1;
+int food_x, food_x1, food_x2;
+int food_y, food_y1, food_y2;
+int food1 = 1, food2 = 1, food3 = 1;
 int counter = 0;
+int length = 3;
+int foodAmt = 0;
+
 // Author: Matthew; Function to display the win screen and exit the game
 void winScreen()
 {
@@ -41,12 +45,61 @@ void scoreboard(int counter)
 }
 
 // Author: Matthew; Function to spawn an food at a random position within the game boundaries
-void food()
+void food(int *length, int seg_y[], int seg_x[])
 {
     attron(COLOR_PAIR(5));
-    food_x = (rand() % 41) + 61;
-    food_y = (rand() % 19) + 2;
-    mvprintw(food_y, food_x, "@");
+    while(foodAmt < 3)
+    {
+        if(food1)
+        {
+            food_x = (rand() % 41) + 61;
+            food_y = (rand() % 19) + 2;
+            food1 = 0;
+            foodAmt++;
+        }
+        if(food2)
+        {
+            food_x1 = (rand() % 41) + 61;
+            food_y1 = (rand() % 19) + 2;
+            food2 = 0;
+            foodAmt++;
+        }
+        if(food3)
+        {
+            food_x2 = (rand() % 41) + 61;
+            food_y2 = (rand() % 19) + 2;
+            food3 = 0;
+            foodAmt++;
+        }
+
+        for(int i = 1; i < *length; ++i) {
+        if(seg_y[i] == food_y && seg_x[i] == food_x )
+        {
+            food1 = 1;
+            food(length, seg_y, seg_x);
+        }
+        else if(seg_y[i] == food_y1 && seg_x[i] == food_x1)
+        {
+            food2 = 1;
+            food(length, seg_y, seg_x);
+        }
+        else if(seg_y[i] == food_y2 && seg_x[i] == food_x2)
+        {
+            food3 = 1;
+            food(length, seg_y, seg_x);
+            
+        }
+        else
+        {
+            mvprintw(food_y, food_x, "@");
+            mvprintw(food_y1, food_x1, "@");
+            mvprintw(food_y2, food_x2, "@");
+
+        }
+        }
+    }
+    
+    
 
     refresh();
 }
@@ -117,8 +170,10 @@ void character()
     static int seg_x[buffer];
     static int seg_y[buffer];
 
+    food(&length, seg_y, seg_x);
+    
+
     int ate_food = 0;
-    int length = 3;
 
     seg_x[0] = x;
     seg_y[0] = y;
@@ -171,7 +226,36 @@ void character()
 
         if(seg_x[0] == food_x && seg_y[0] == food_y)
         {
-            food();
+            foodAmt--;
+            food1 = 1;
+            food2 = 0;
+            food3 = 0;
+            food(&length, seg_y, seg_x);
+            counter++;
+            scoreboard(counter);
+            ate_food = 1;
+            length++;
+
+        }
+        else if(seg_x[0] == food_x1 && seg_y[0] == food_y1)
+        {
+            foodAmt--;
+            food1 = 0;
+            food2 = 1;
+            food3 = 0;
+            food(&length, seg_y, seg_x);
+            counter++;
+            scoreboard(counter);
+            ate_food = 1;
+            length++;
+        }
+        else if(seg_x[0] == food_x2 && seg_y[0] == food_y2)
+        {
+            foodAmt--;
+            food1 = 0;
+            food2 = 0;
+            food3 = 1;
+            food(&length, seg_y, seg_x);
             counter++;
             scoreboard(counter);
             ate_food = 1;
@@ -247,7 +331,6 @@ void map()
     if(start)
     {
         scoreboard(counter);
-        food();
         character();
     }
 }

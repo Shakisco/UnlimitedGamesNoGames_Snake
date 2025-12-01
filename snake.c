@@ -69,13 +69,16 @@ void fail(int seg_y[], int seg_x[])
 }
 
 // Author: Shakil; Function to update the snake's position on the screen
-void shift_snake(int seg_x[], int seg_y[], int *length, int dx, int dy)
+void shift_snake(int seg_x[], int seg_y[], int *length, int dx, int dy, int ate_food)
 {
     int new_x = seg_x[0] + dx;
     int new_y = seg_y[0] + dy;
 
     attron(COLOR_PAIR(6));
-    mvprintw(seg_y[*length - 1], seg_x[*length - 1], " ");
+    if(!ate_food)
+    {
+        mvprintw(seg_y[*length - 1], seg_x[*length - 1], " ");
+    }
 
     for (int i = *length - 1; i > 0; --i) {
         seg_x[i] = seg_x[i - 1];
@@ -89,6 +92,7 @@ void shift_snake(int seg_x[], int seg_y[], int *length, int dx, int dy)
         mvprintw(seg_y[i], seg_x[i], "o");
     }
     mvprintw(seg_y[0], seg_x[0], "O");
+
     refresh();
 }
 
@@ -102,6 +106,7 @@ void character()
     static int seg_x[buffer];
     static int seg_y[buffer];
 
+    int ate_food = 0;
     int length = 3;
 
     seg_x[0] = x;
@@ -154,13 +159,16 @@ void character()
             food();
             counter++;
             scoreboard(counter);
+            ate_food = 1;
+            length++;
         }
 
         if(seg_x[0] + dx <= 60 || seg_x[0] + dx >= 102 || seg_y[0] + dy <= 1 || seg_y[0] + dy >= 21){
             fail(seg_y, seg_x);
         }
 
-        shift_snake(seg_x, seg_y, &length, dx, dy);
+        shift_snake(seg_x, seg_y, &length, dx, dy, ate_food);
+        ate_food = 0;
 
         if(dy != 0)
         {

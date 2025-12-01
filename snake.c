@@ -5,17 +5,19 @@
 #include <stdlib.h>
 #include <time.h>
 
+int apple_x = -1;
+int apple_y = -1;
+
 void apple()
 {
-    int x = (rand() % 41) + 61;
-    int y = (rand() % 19) + 1;
-    mvprintw(y, x, "A");
+    apple_x = (rand() % 41) + 61;
+    apple_y = (rand() % 19) + 1;
+    mvprintw(apple_y, apple_x, "A");
     refresh();
 }
 
 void fail(int prev_y, int prev_x)
 {
-    
     mvprintw(prev_y, prev_x, " ");
     refresh();
 
@@ -29,7 +31,6 @@ void fail(int prev_y, int prev_x)
     getch();
     endwin();
     exit(0);
-    
 }
 
 void character()
@@ -47,7 +48,7 @@ void character()
     nodelay(stdscr, TRUE);
     curs_set(0);
 
-    mvprintw(prev_y, prev_x, "@");
+    mvprintw(prev_y, prev_x, "O");
     mvprintw(10, 69, "                         ");
     mvprintw(9, 69, "                     "); 
     refresh();
@@ -81,15 +82,19 @@ void character()
         x += dx;
         y += dy;
 
+        if(x == apple_x && y == apple_y)
+        {
+            apple();
+        }
+
         if(x <= 60 || x >= 102 || y <= 0 || y >= 20){
             fail(prev_y, prev_x);
         }
 
         mvprintw(prev_y, prev_x, " ");
-        mvprintw(y, x, "@");
+        mvprintw(y, x, "O");
         refresh();
 
-        
         if(dy != 0)
         {
             usleep(160000);

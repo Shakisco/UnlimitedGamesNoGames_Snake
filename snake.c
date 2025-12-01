@@ -24,7 +24,7 @@ void scoreboard(int counter)
 void apple()
 {
     apple_x = (rand() % 41) + 61;
-    apple_y = (rand() % 20) + 1;
+    apple_y = (rand() % 19) + 2;
     mvprintw(apple_y, apple_x, "A");
 
     refresh();

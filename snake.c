@@ -5,7 +5,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define MAX_SNAKE 1000
+#define buffer 100
+#define MAX_SNAKE 20
 
 int apple_x = -1;
 int apple_y = -1;
@@ -66,8 +67,8 @@ void character()
     int x = 69;
     int y = 10;
     
-    static int seg_x[MAX_SNAKE];
-    static int seg_y[MAX_SNAKE];
+    static int seg_x[buffer];
+    static int seg_y[buffer];
 
     int length = 3;
 

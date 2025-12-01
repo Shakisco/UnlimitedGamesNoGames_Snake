@@ -35,7 +35,7 @@ void fail(int prev_y, int prev_x)
     exit(0);
 }
 
-void move_snake(int seg_x[], int seg_y[], int *length, int dx, int dy)
+void shift_snake(int seg_x[], int seg_y[], int *length, int dx, int dy)
 {
     int new_x = seg_x[0] + dx;
     int new_y = seg_y[0] + dy;
@@ -120,7 +120,7 @@ void character()
             fail(seg_y[0], seg_x[0]);
         }
 
-        move_snake(seg_x, seg_y, &length, dx, dy);
+        shift_snake(seg_x, seg_y, &length, dx, dy);
 
         if(dy != 0)
         {

@@ -14,7 +14,6 @@ int counter = 0;
 
 void winScreen()
 {
-    init_pair(5, COLOR_YELLOW, COLOR_BLACK);
     attron(COLOR_PAIR(5));
     mvprintw(10, 78, "You Win");
 
@@ -31,6 +30,7 @@ void winScreen()
 // Author: Matthew; Function to update and display the scoreboard
 void scoreboard(int counter)
 {
+    attron(COLOR_PAIR(7));
     mvprintw(0, 60, "Score to beat: 40");
     mvprintw(0, 94, "Score: %d", counter);
     if(counter == MAX_SNAKE)
@@ -43,9 +43,10 @@ void scoreboard(int counter)
 // Author: Matthew; Function to spawn an food at a random position within the game boundaries
 void food()
 {
+    attron(COLOR_PAIR(5));
     food_x = (rand() % 41) + 61;
     food_y = (rand() % 19) + 2;
-    mvprintw(food_y, food_x, "A");
+    mvprintw(food_y, food_x, "@");
 
     refresh();
 }
@@ -58,7 +59,6 @@ void fail(int seg_y[], int seg_x[])
 
     nodelay(stdscr, FALSE);
     
-    init_pair(4, COLOR_RED, COLOR_BLACK);
     attron(COLOR_PAIR(4));
     mvprintw(10, 66, "Game Over! Press any key to exit.");
     refresh();
@@ -74,6 +74,7 @@ void shift_snake(int seg_x[], int seg_y[], int *length, int dx, int dy)
     int new_x = seg_x[0] + dx;
     int new_y = seg_y[0] + dy;
 
+    attron(COLOR_PAIR(6));
     mvprintw(seg_y[*length - 1], seg_x[*length - 1], " ");
 
     for (int i = *length - 1; i > 0; --i) {
@@ -118,6 +119,7 @@ void character()
     nodelay(stdscr, TRUE);
     curs_set(0);
 
+    attron(COLOR_PAIR(6));
     mvprintw(seg_y[2], seg_x[2], "o");
     mvprintw(seg_y[1], seg_x[1], "o");
     mvprintw(seg_y[0], seg_x[0], "O");
@@ -180,14 +182,18 @@ void map()
     init_pair(1, COLOR_RED, COLOR_BLACK);
     init_pair(2, COLOR_BLACK, COLOR_BLACK);
     init_pair(3, COLOR_WHITE, COLOR_BLACK);
+    init_pair(4, COLOR_RED, COLOR_BLACK);
+    init_pair(5, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(6, COLOR_GREEN, COLOR_BLACK);
+    init_pair(7, COLOR_BLUE, COLOR_BLACK);
     
     int x, y, j, i;
     attron(COLOR_PAIR(2));
-    for(j = 60; j <= 100; j++)
+    for(j = 0; j <= 500; j++)
     {
-        for(i = 1; i <= 21; i++)
+        for(i = 0; i <= 100; i++)
         {
-            mvprintw(i, j + 1, " ");
+            mvprintw(i, j, " ");
         }
     }
     attron(COLOR_PAIR(1));

@@ -11,7 +11,7 @@
 int apple_x = -1;
 int apple_y = -1;
 
-// Author: Shakil; Function to spawn an apple at a random position within the game boundaries
+// Author: Matthew; Function to spawn an apple at a random position within the game boundaries
 void apple()
 {
     apple_x = (rand() % 41) + 61;

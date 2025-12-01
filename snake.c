@@ -11,7 +11,7 @@
 int food_x = -1;
 int food_y = -1;
 int counter = 0;
-
+// Author: Matthew; Function to display the win screen and exit the game
 void winScreen()
 {
     attron(COLOR_PAIR(5));
@@ -149,16 +149,20 @@ void character()
         switch(input)
         {
             case 'w': case 'W':
-                dx = 0, dy = -1;
+                if(dy == 0)
+                    dx = 0, dy = -1;
                 break;
             case 's': case 'S':
-                dx = 0, dy = 1;
+                if(dy == 0)
+                    dx = 0, dy = 1;
                 break;
             case 'a': case 'A':
-                dx = -1, dy = 0;
+                if(dx == 0)
+                    dx = -1, dy = 0;
                 break;
             case 'd': case 'D':
-                dx = 1, dy = 0;
+                if(dx == 0)
+                    dx = 1, dy = 0;
                 break;
             case 'q': case 'Q':
                 endwin();

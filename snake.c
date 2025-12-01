@@ -6,7 +6,7 @@
 #include <time.h>
 
 #define buffer 1000
-#define MAX_SNAKE 200
+#define MAX_SNAKE 20
 
 int food_x, food_x1, food_x2;
 int food_y, food_y1, food_y2;
@@ -20,21 +20,24 @@ void startup();
 // Author: Matthew; Function to display the win screen and exit the game
 void winScreen()
 {
-    nodelay(stdscr, FALSE);
+    nodelay(stdscr, TRUE);
 
-    attron(COLOR_PAIR(5));
-    mvprintw(10, 78, "You Win");
-    
     attron(COLOR_PAIR(3));
     mvprintw(11, 67, "Press R to restart or Q to quit.");
     refresh();
-    
-    int choice;
-    while (1) {
-        choice = getch();
+
+    while(1){
+        attron(COLOR_PAIR(5));
+        mvprintw(10, 78, "You Win");
+        refresh();
+        usleep(600000);
+        mvprintw(10, 78, "           ");
+        refresh();
+        usleep(600000);
+ 
+        char choice = getch();        
         if (choice == 'r' || choice == 'R') {
             counter = 0;
-            length = 3;
             food1 = food2 = food3 = 1;
             foodAmt = 0;
             startup();
@@ -127,17 +130,22 @@ void fail(int *length, int snake_y[], int snake_x[])
         usleep(200000);
     }
 
-    nodelay(stdscr, FALSE);
+    nodelay(stdscr, TRUE);
     
     attron(COLOR_PAIR(4));
-    mvprintw(10, 78, "Game Over!");
     mvprintw(11, 67, "Press R to restart or Q to quit.");
     sleep(1);
     refresh();
 
-    int choice;
-    while (1) {
-        choice = getch();
+    while(1){
+        mvprintw(10, 78, "Game Over!");
+        refresh();
+        usleep(600000);
+        mvprintw(10, 78, "           ");
+        refresh();
+        usleep(600000);
+ 
+        char choice = getch();        
         if (choice == 'r' || choice == 'R') {
             counter = 0;
             food1 = food2 = food3 = 1;
@@ -225,7 +233,7 @@ void character()
     mvprintw(11, 69, "                         ");
 
     food(&length, snake_y, snake_x);
-    
+
     refresh();
 
     while(1){
@@ -375,7 +383,6 @@ void map()
         {
             break;
         }
-        
     }
 
     scoreboard(counter);

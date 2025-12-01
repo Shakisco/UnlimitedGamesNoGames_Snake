@@ -15,7 +15,8 @@ int counter = 0;
 // Author: Matthew; Function to update and display the scoreboard
 void scoreboard(int counter)
 {
-    mvprintw(0, 90, "Score: %d", counter);
+    mvprintw(0, 60, "Score to beat: 20");
+    mvprintw(0, 94, "Score: %d", counter);
     refresh();
 }
 

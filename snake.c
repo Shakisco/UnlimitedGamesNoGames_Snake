@@ -121,8 +121,8 @@ void food(int *length, int seg_y[], int seg_x[])
 void fail(int seg_y[], int seg_x[])
 {
     mvprintw(seg_y[0], seg_x[0], " ");
-    refresh();
 
+    refresh();
     nodelay(stdscr, FALSE);
     
     attron(COLOR_PAIR(4));

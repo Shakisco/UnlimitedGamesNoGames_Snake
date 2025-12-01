@@ -12,11 +12,31 @@ int apple_x = -1;
 int apple_y = -1;
 int counter = 0;
 
+void winScreen()
+{
+    init_pair(5, COLOR_YELLOW, COLOR_BLACK);
+    attron(COLOR_PAIR(5));
+    mvprintw(10, 78, "You Win");
+
+    attron(COLOR_PAIR(3));
+    mvprintw(11, 71, "Press any key to exit");
+    refresh();
+
+    nodelay(stdscr, FALSE);
+    getch();
+    endwin();
+    exit(0);
+}
+
 // Author: Matthew; Function to update and display the scoreboard
 void scoreboard(int counter)
 {
-    mvprintw(0, 60, "Score to beat: 20");
+    mvprintw(0, 60, "Score to beat: 40");
     mvprintw(0, 94, "Score: %d", counter);
+    if(counter == 40)
+    {
+        winScreen();
+    }
     refresh();
 }
 
@@ -31,14 +51,14 @@ void apple()
 }
 
 // Author: Matthew; Function to handle game over scenario
-void fail(int prev_y, int prev_x)
+void fail(int seg_y[], int seg_x[])
 {
-    mvprintw(prev_y, prev_x, " ");
+    mvprintw(seg_y[0], seg_x[0], " ");
     refresh();
 
     nodelay(stdscr, FALSE);
-    start_color();
-    init_pair(4, COLOR_YELLOW, COLOR_BLACK);
+    
+    init_pair(4, COLOR_RED, COLOR_BLACK);
     attron(COLOR_PAIR(4));
     mvprintw(10, 66, "Game Over! Press any key to exit.");
     refresh();
@@ -135,7 +155,7 @@ void character()
         }
 
         if(seg_x[0] + dx <= 60 || seg_x[0] + dx >= 102 || seg_y[0] + dy <= 1 || seg_y[0] + dy >= 21){
-            fail(seg_y[0], seg_x[0]);
+            fail(seg_y, seg_x);
         }
 
         shift_snake(seg_x, seg_y, &length, dx, dy);

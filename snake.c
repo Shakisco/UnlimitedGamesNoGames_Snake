@@ -12,6 +12,7 @@ int apple_x = -1;
 int apple_y = -1;
 int counter = 0;
 
+// Author: Matthew; Function to update and display the scoreboard
 void scoreboard(int counter)
 {
     mvprintw(0, 90, "Score: %d", counter);

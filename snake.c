@@ -15,20 +15,35 @@ int counter = 0;
 int length = 3;
 int foodAmt = 0;
 
+void startup();
+
 // Author: Matthew; Function to display the win screen and exit the game
 void winScreen()
 {
+    nodelay(stdscr, FALSE);
+
     attron(COLOR_PAIR(5));
     mvprintw(10, 78, "You Win");
-
+    
     attron(COLOR_PAIR(3));
-    mvprintw(11, 71, "Press any key to exit");
+    mvprintw(11, 67, "Press R to restart or Q to quit.");
     refresh();
-
-    nodelay(stdscr, FALSE);
-    getch();
-    endwin();
-    exit(0);
+    
+    int choice;
+    while (1) {
+        choice = getch();
+        if (choice == 'r' || choice == 'R') {
+            counter = 0;
+            length = 3;
+            food1 = food2 = food3 = 1;
+            foodAmt = 0;
+            startup();
+        } 
+        else if (choice == 'q' || choice == 'Q') {
+            endwin();
+            exit(0);
+        }
+    }
 }
 
 // Author: Matthew; Function to update and display the scoreboard
@@ -44,7 +59,7 @@ void scoreboard(int counter)
     refresh();
 }
 
-// Author: Matthew; Function to spawn an food at a random position within the game boundaries
+// Author: Matthew; Function to spawn 3 foods at random positions within the game boundaries
 void food(int *length, int seg_y[], int seg_x[])
 {
     attron(COLOR_PAIR(5));
@@ -90,20 +105,15 @@ void food(int *length, int seg_y[], int seg_x[])
             food3 = 1;
             foodAmt--;
             food(length, seg_y, seg_x);
-            
         }
         else
         {
             mvprintw(food_y, food_x, "@");
             mvprintw(food_y1, food_x1, "@");
             mvprintw(food_y2, food_x2, "@");
-
         }
         }
     }
-    
-    
-
     refresh();
 }
 
@@ -116,15 +126,29 @@ void fail(int seg_y[], int seg_x[])
     nodelay(stdscr, FALSE);
     
     attron(COLOR_PAIR(4));
-    mvprintw(10, 66, "Game Over! Press any key to exit.");
+    mvprintw(10, 78, "Game Over!");
+    mvprintw(11, 67, "Press R to restart or Q to quit.");
     sleep(1);
     refresh();
 
-    getch();
-    endwin();
-    exit(0);
+    int choice;
+    while (1) {
+        choice = getch();
+        if (choice == 'r' || choice == 'R') {
+            counter = 0;
+            length = 3;
+            food1 = food2 = food3 = 1;
+            foodAmt = 0;
+            startup();
+        } 
+        else if (choice == 'q' || choice == 'Q') {
+            endwin();
+            exit(0);
+        }
+    }
 }
 
+// Author: Shakil; Function to check for self-collision of the snake
 int self_collision(int seg_x[], int seg_y[], int length)
 {
     for (int i = 1; i < length; i++){
@@ -165,7 +189,6 @@ void shift_snake(int seg_x[], int seg_y[], int *length, int dx, int dy, int ate_
 // Author: Shakil; Function to initialize and control the snake movement, input, and collision
 void character()
 {
-
     int x = 69;
     int y = 10;
     
@@ -173,7 +196,6 @@ void character()
     static int seg_y[buffer];
 
     food(&length, seg_y, seg_x);
-    
 
     int ate_food = 0;
 
@@ -327,7 +349,7 @@ void map()
 
     attron(COLOR_PAIR(3));
     mvprintw(9, 69, "Use WASD to move");
-    mvprintw(10, 69, "q is to quit");
+    mvprintw(10, 69, "Press Q to quit");
     mvprintw(11, 69, "Press any key to start... ");
 
     noecho();
@@ -346,7 +368,6 @@ void startup()
     refresh();
     sleep(1);
     map();
-
 }
 // Author: Matthew; Main function to initialize curses and start the game
 int main(){

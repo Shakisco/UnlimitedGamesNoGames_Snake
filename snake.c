@@ -35,6 +35,28 @@ void fail(int prev_y, int prev_x)
     exit(0);
 }
 
+void move_snake(int seg_x[], int seg_y[], int *length, int dx, int dy)
+{
+    int new_x = seg_x[0] + dx;
+    int new_y = seg_y[0] + dy;
+
+    mvprintw(seg_y[*length - 1], seg_x[*length - 1], " ");
+
+    for (int i = *length - 1; i > 0; --i) {
+        seg_x[i] = seg_x[i - 1];
+        seg_y[i] = seg_y[i - 1];
+    }
+
+    seg_x[0] = new_x;
+    seg_y[0] = new_y;
+
+    for (int i = 1; i < *length; ++i) {
+        mvprintw(seg_y[i], seg_x[i], "o");
+    }
+    mvprintw(seg_y[0], seg_x[0], "O");
+    refresh();
+}
+
 void character()
 {
     int x = 69;
@@ -62,7 +84,7 @@ void character()
 
     mvprintw(seg_y[2], seg_x[2], "o");
     mvprintw(seg_y[1], seg_x[1], "o");
-    mvprintw(seg_y[0], seg_x[0], "@");
+    mvprintw(seg_y[0], seg_x[0], "O");
 
     mvprintw(10, 69, "                         ");
     mvprintw(9, 69, "                     "); 
@@ -88,32 +110,17 @@ void character()
                 endwin();
                 exit(0);
         }
-        
-        int new_x = seg_x[0] + dx;
-        int new_y = seg_y[0] + dy;
 
-        if(x == apple_x && y == apple_y)
+        if(seg_x[0] == apple_x && seg_y[0] == apple_y)
         {
             apple();
         }
 
-        if(new_x <= 60 || new_x >= 102 || new_y <= 0 || new_y >= 20){
+        if(seg_x[0] + dx <= 60 || seg_x[0] + dx >= 102 || seg_y[0] + dy <= 0 || seg_y[0] + dy >= 20){
             fail(seg_y[0], seg_x[0]);
         }
 
-        for (int i = length - 1; i > 0; --i) {
-            seg_x[i] = seg_x[i - 1];
-            seg_y[i] = seg_y[i - 1];
-        }
-
-        seg_x[0] = new_x;
-        seg_y[0] = new_y;
-
-        for (int i = 1; i < length; ++i) {
-            mvprintw(seg_y[i], seg_x[i], "o");
-        }
-        mvprintw(seg_y[0], seg_x[0], "@");
-        refresh();
+        move_snake(seg_x, seg_y, &length, dx, dy);
 
         if(dy != 0)
         {

@@ -199,6 +199,7 @@ void character()
 
     mvprintw(10, 69, "                         ");
     mvprintw(9, 69, "                     "); 
+    mvprintw(11, 69, "                         ");
     refresh();
 
     while(1){
@@ -326,7 +327,8 @@ void map()
 
     attron(COLOR_PAIR(3));
     mvprintw(9, 69, "Use WASD to move");
-    mvprintw(10, 69, "Press any key to start... ");
+    mvprintw(10, 69, "q is to quit");
+    mvprintw(11, 69, "Press any key to start... ");
 
     noecho();
     char start = getch();

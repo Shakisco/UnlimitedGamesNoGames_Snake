@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define buffer 100
-#define MAX_SNAKE 40
+#define buffer 1000
+#define MAX_SNAKE 200
 
 int food_x, food_x1, food_x2;
 int food_y, food_y1, food_y2;
@@ -35,7 +35,7 @@ void winScreen()
 void scoreboard(int counter)
 {
     attron(COLOR_PAIR(7));
-    mvprintw(0, 60, "Score to beat: 40");
+    mvprintw(0, 60, "Score to beat: %d", MAX_SNAKE);
     mvprintw(0, 94, "Score: %d", counter);
     if(counter == MAX_SNAKE)
     {
@@ -76,16 +76,19 @@ void food(int *length, int seg_y[], int seg_x[])
         if(seg_y[i] == food_y && seg_x[i] == food_x )
         {
             food1 = 1;
+            foodAmt--;
             food(length, seg_y, seg_x);
         }
         else if(seg_y[i] == food_y1 && seg_x[i] == food_x1)
         {
             food2 = 1;
+            foodAmt--;
             food(length, seg_y, seg_x);
         }
         else if(seg_y[i] == food_y2 && seg_x[i] == food_x2)
         {
             food3 = 1;
+            foodAmt--;
             food(length, seg_y, seg_x);
             
         }

@@ -87,7 +87,7 @@ void food(int *length, int seg_y[], int seg_x[])
             foodAmt++;
         }
 
-        for(int i = 1; i < *length; ++i) {
+        for(int i = 0; i < *length; ++i) {
         if(seg_y[i] == food_y && seg_x[i] == food_x )
         {
             food1 = 1;
@@ -118,11 +118,15 @@ void food(int *length, int seg_y[], int seg_x[])
 }
 
 // Author: Matthew; Function to handle game over scenario
-void fail(int seg_y[], int seg_x[])
+void fail(int *length, int seg_y[], int seg_x[])
 {
-    mvprintw(seg_y[0], seg_x[0], " ");
+    for(int i = 0; i < *length; i++)
+    {
+        mvprintw(seg_y[i], seg_x[i], " ");
+        refresh();
+        usleep(200000);
+    }
 
-    refresh();
     nodelay(stdscr, FALSE);
     
     attron(COLOR_PAIR(4));
@@ -136,7 +140,6 @@ void fail(int seg_y[], int seg_x[])
         choice = getch();
         if (choice == 'r' || choice == 'R') {
             counter = 0;
-            length = 3;
             food1 = food2 = food3 = 1;
             foodAmt = 0;
             startup();
@@ -288,12 +291,12 @@ void character()
         }
 
         if(seg_x[0] + dx <= 60 || seg_x[0] + dx >= 102 || seg_y[0] + dy <= 1 || seg_y[0] + dy >= 21){
-            fail(seg_y, seg_x);
+            fail(&length, seg_y, seg_x);
         }
 
         shift_snake(seg_x, seg_y, &length, dx, dy, ate_food);
         if(self_collision(seg_x, seg_y, length)){
-            fail(seg_y, seg_x);
+            fail(&length, seg_y, seg_x);
         }
         ate_food = 0;
 
@@ -362,10 +365,16 @@ void map()
         usleep(600000);
  
         char start = getch();
+        if(start == 'q')
+        {
+            endwin();
+            exit(0);
+        }
         if(start != ERR)
         {
             break;
         }
+        
     }
 
     scoreboard(counter);
@@ -376,6 +385,7 @@ void map()
 void startup()
 {
     clear();
+    length = 3;
     mvprintw(5, 5, "Starting....");
     refresh();
     sleep(1);

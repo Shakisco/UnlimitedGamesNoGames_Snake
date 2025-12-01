@@ -8,8 +8,8 @@
 #define buffer 100
 #define MAX_SNAKE 40
 
-int apple_x = -1;
-int apple_y = -1;
+int food_x = -1;
+int food_y = -1;
 int counter = 0;
 
 void winScreen()
@@ -40,12 +40,12 @@ void scoreboard(int counter)
     refresh();
 }
 
-// Author: Matthew; Function to spawn an apple at a random position within the game boundaries
-void apple()
+// Author: Matthew; Function to spawn an food at a random position within the game boundaries
+void food()
 {
-    apple_x = (rand() % 41) + 61;
-    apple_y = (rand() % 19) + 2;
-    mvprintw(apple_y, apple_x, "A");
+    food_x = (rand() % 41) + 61;
+    food_y = (rand() % 19) + 2;
+    mvprintw(food_y, food_x, "A");
 
     refresh();
 }
@@ -147,9 +147,9 @@ void character()
                 exit(0);
         }
 
-        if(seg_x[0] == apple_x && seg_y[0] == apple_y)
+        if(seg_x[0] == food_x && seg_y[0] == food_y)
         {
-            apple();
+            food();
             counter++;
             scoreboard(counter);
         }
@@ -215,7 +215,7 @@ void map()
     if(start)
     {
         scoreboard(counter);
-        apple();
+        food();
         character();
     }
 }

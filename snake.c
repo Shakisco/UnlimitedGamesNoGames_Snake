@@ -350,16 +350,28 @@ void map()
     attron(COLOR_PAIR(3));
     mvprintw(9, 69, "Use WASD to move");
     mvprintw(10, 69, "Press Q to quit");
-    mvprintw(11, 69, "Press any key to start... ");
 
     noecho();
-    char start = getch();
-    if(start)
-    {
-        scoreboard(counter);
-        character();
+    nodelay(stdscr, TRUE);
+    while(1){
+        mvprintw(11, 69, "Press any key to start... ");
+        refresh();
+        usleep(600000);
+        mvprintw(11, 69, "                         ");
+        refresh();
+        usleep(600000);
+ 
+        char start = getch();
+        if(start != ERR)
+        {
+            break;
+        }
     }
+
+    scoreboard(counter);
+    character();
 }
+
 // Author: Matthew; Function to display startup message and initialize the game
 void startup()
 {
@@ -369,6 +381,7 @@ void startup()
     sleep(1);
     map();
 }
+
 // Author: Matthew; Main function to initialize curses and start the game
 int main(){
 

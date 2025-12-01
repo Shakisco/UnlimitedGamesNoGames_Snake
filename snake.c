@@ -10,7 +10,7 @@
 int apple_x = -1;
 int apple_y = -1;
 
-// Function to spawn an apple at a random position within the game boundaries
+// Author: Shakil; Function to spawn an apple at a random position within the game boundaries
 void apple()
 {
     apple_x = (rand() % 41) + 61;
@@ -19,7 +19,7 @@ void apple()
     refresh();
 }
 
-// Function to handle game over scenario
+// Author: Matthew; Function to handle game over scenario
 void fail(int prev_y, int prev_x)
 {
     mvprintw(prev_y, prev_x, " ");
@@ -37,7 +37,7 @@ void fail(int prev_y, int prev_x)
     exit(0);
 }
 
-// Function to update the snake's position on the screen
+// Author: Shakil; Function to update the snake's position on the screen
 void shift_snake(int seg_x[], int seg_y[], int *length, int dx, int dy)
 {
     int new_x = seg_x[0] + dx;
@@ -60,7 +60,7 @@ void shift_snake(int seg_x[], int seg_y[], int *length, int dx, int dy)
     refresh();
 }
 
-// Function to initialize and control the snake movement, input, and collision
+// Author: Shakil; Function to initialize and control the snake movement, input, and collision
 void character()
 {
     int x = 69;
@@ -137,7 +137,7 @@ void character()
     }
 }
 
-// Function to draw the game map and start the game
+// Author: Matthew; Function to draw the game map and start the game
 void map()
 {
     clear();
@@ -184,7 +184,7 @@ void map()
         character();
     }
 }
-// Function to display startup message and initialize the game
+// Author: Matthew; Function to display startup message and initialize the game
 void startup()
 {
     clear();
@@ -194,7 +194,7 @@ void startup()
     map();
 
 }
-// Main function to initialize curses and start the game
+// Author: Matthew; Main function to initialize curses and start the game
 int main(){
 
     initscr();

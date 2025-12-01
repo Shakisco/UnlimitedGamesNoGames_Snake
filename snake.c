@@ -22,7 +22,6 @@ void scoreboard(int counter)
 // Author: Matthew; Function to spawn an apple at a random position within the game boundaries
 void apple()
 {
-    attron(COLOR_PAIR(5));
     apple_x = (rand() % 41) + 61;
     apple_y = (rand() % 20) + 1;
     mvprintw(apple_y, apple_x, "A");

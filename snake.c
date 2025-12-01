@@ -155,9 +155,8 @@ void shift_snake(int seg_x[], int seg_y[], int *length, int dx, int dy, int ate_
     seg_x[0] = new_x;
     seg_y[0] = new_y;
 
-    for (int i = 1; i < *length; ++i) {
-        mvprintw(seg_y[i], seg_x[i], "o");
-    }
+    mvprintw(seg_y[1], seg_x[1], "o");
+    
     mvprintw(seg_y[0], seg_x[0], "O");
 
     refresh();

@@ -61,11 +61,22 @@ void fail(int seg_y[], int seg_x[])
     
     attron(COLOR_PAIR(4));
     mvprintw(10, 66, "Game Over! Press any key to exit.");
+    sleep(1);
     refresh();
 
     getch();
     endwin();
     exit(0);
+}
+
+int self_collision(int seg_x[], int seg_y[], int length)
+{
+    for (int i = 1; i < length; i++){
+        if (seg_x[0] == seg_x[i] && seg_y[0] == seg_y[i]){
+            return 1;
+        }
+    }
+    return 0;
 }
 
 // Author: Shakil; Function to update the snake's position on the screen
@@ -168,6 +179,9 @@ void character()
         }
 
         shift_snake(seg_x, seg_y, &length, dx, dy, ate_food);
+        if(self_collision(seg_x, seg_y, length)){
+            fail(seg_y, seg_x);
+        }
         ate_food = 0;
 
         if(dy != 0)

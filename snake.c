@@ -60,7 +60,7 @@ void scoreboard(int counter)
 }
 
 // Author: Matthew; Function to spawn 3 foods at random positions within the game boundaries
-void food(int *length, int seg_y[], int seg_x[])
+void food(int *length, int snake_y[], int snake_x[])
 {
     attron(COLOR_PAIR(5));
     while(foodAmt < 3)
@@ -88,41 +88,41 @@ void food(int *length, int seg_y[], int seg_x[])
         }
 
         for(int i = 0; i < *length; ++i) {
-        if(seg_y[i] == food_y && seg_x[i] == food_x )
-        {
-            food1 = 1;
-            foodAmt--;
-            food(length, seg_y, seg_x);
-        }
-        else if(seg_y[i] == food_y1 && seg_x[i] == food_x1)
-        {
-            food2 = 1;
-            foodAmt--;
-            food(length, seg_y, seg_x);
-        }
-        else if(seg_y[i] == food_y2 && seg_x[i] == food_x2)
-        {
-            food3 = 1;
-            foodAmt--;
-            food(length, seg_y, seg_x);
-        }
-        else
-        {
-            mvprintw(food_y, food_x, "@");
-            mvprintw(food_y1, food_x1, "@");
-            mvprintw(food_y2, food_x2, "@");
-        }
+            if(snake_y[i] == food_y && snake_x[i] == food_x )
+            {
+                food1 = 1;
+                foodAmt--;
+                food(length, snake_y, snake_x);
+            }
+            else if(snake_y[i] == food_y1 && snake_x[i] == food_x1)
+            {
+                food2 = 1;
+                foodAmt--;
+                food(length, snake_y, snake_x);
+            }
+            else if(snake_y[i] == food_y2 && snake_x[i] == food_x2)
+            {
+                food3 = 1;
+                foodAmt--;
+                food(length, snake_y, snake_x);
+            }
+            else
+            {
+                mvprintw(food_y, food_x, "@");
+                mvprintw(food_y1, food_x1, "@");
+                mvprintw(food_y2, food_x2, "@");
+            }
         }
     }
     refresh();
 }
 
 // Author: Matthew; Function to handle game over scenario
-void fail(int *length, int seg_y[], int seg_x[])
+void fail(int *length, int snake_y[], int snake_x[])
 {
     for(int i = 0; i < *length; i++)
     {
-        mvprintw(seg_y[i], seg_x[i], " ");
+        mvprintw(snake_y[i], snake_x[i], " ");
         refresh();
         usleep(200000);
     }
@@ -152,10 +152,10 @@ void fail(int *length, int seg_y[], int seg_x[])
 }
 
 // Author: Shakil; Function to check for self-collision of the snake
-int self_collision(int seg_x[], int seg_y[], int length)
+int self_collision(int snake_x[], int snake_y[], int length)
 {
     for (int i = 1; i < length; i++){
-        if (seg_x[0] == seg_x[i] && seg_y[0] == seg_y[i]){
+        if (snake_x[0] == snake_x[i] && snake_y[0] == snake_y[i]){
             return 1;
         }
     }
@@ -163,28 +163,28 @@ int self_collision(int seg_x[], int seg_y[], int length)
 }
 
 // Author: Shakil; Function to update the snake's position on the screen
-void shift_snake(int seg_x[], int seg_y[], int *length, int dx, int dy, int ate_food)
+void shift_snake(int snake_x[], int snake_y[], int *length, int dx, int dy, int ate_food)
 {
-    int new_x = seg_x[0] + dx;
-    int new_y = seg_y[0] + dy;
+    int new_x = snake_x[0] + dx;
+    int new_y = snake_y[0] + dy;
 
     attron(COLOR_PAIR(6));
     if(!ate_food)
     {
-        mvprintw(seg_y[*length - 1], seg_x[*length - 1], " ");
+        mvprintw(snake_y[*length - 1], snake_x[*length - 1], " ");
     }
 
     for (int i = *length - 1; i > 0; --i) {
-        seg_x[i] = seg_x[i - 1];
-        seg_y[i] = seg_y[i - 1];
+        snake_x[i] = snake_x[i - 1];
+        snake_y[i] = snake_y[i - 1];
     }
 
-    seg_x[0] = new_x;
-    seg_y[0] = new_y;
+    snake_x[0] = new_x;
+    snake_y[0] = new_y;
 
-    mvprintw(seg_y[1], seg_x[1], "o");
+    mvprintw(snake_y[1], snake_x[1], "o");
     
-    mvprintw(seg_y[0], seg_x[0], "O");
+    mvprintw(snake_y[0], snake_x[0], "O");
 
     refresh();
 }
@@ -195,19 +195,17 @@ void character()
     int x = 69;
     int y = 10;
     
-    static int seg_x[buffer];
-    static int seg_y[buffer];
-
-    food(&length, seg_y, seg_x);
+    static int snake_x[buffer];
+    static int snake_y[buffer];
 
     int ate_food = 0;
 
-    seg_x[0] = x;
-    seg_y[0] = y;
-    seg_x[1] = x - 1;
-    seg_y[1] = y;
-    seg_x[2] = x - 2;
-    seg_y[2] = y;
+    snake_x[0] = x;
+    snake_y[0] = y;
+    snake_x[1] = x - 1;
+    snake_y[1] = y;
+    snake_x[2] = x - 2;
+    snake_y[2] = y;
 
     int dx = 1;
     int dy = 0;
@@ -218,13 +216,16 @@ void character()
     curs_set(0);
 
     attron(COLOR_PAIR(6));
-    mvprintw(seg_y[2], seg_x[2], "o");
-    mvprintw(seg_y[1], seg_x[1], "o");
-    mvprintw(seg_y[0], seg_x[0], "O");
+    mvprintw(snake_y[2], snake_x[2], "o");
+    mvprintw(snake_y[1], snake_x[1], "o");
+    mvprintw(snake_y[0], snake_x[0], "O");
 
     mvprintw(10, 69, "                         ");
     mvprintw(9, 69, "                     "); 
     mvprintw(11, 69, "                         ");
+
+    food(&length, snake_y, snake_x);
+    
     refresh();
 
     while(1){
@@ -252,51 +253,51 @@ void character()
                 exit(0);
         }
 
-        if(seg_x[0] == food_x && seg_y[0] == food_y)
+        if(snake_x[0] == food_x && snake_y[0] == food_y)
         {
             foodAmt--;
             food1 = 1;
             food2 = 0;
             food3 = 0;
-            food(&length, seg_y, seg_x);
+            food(&length, snake_y, snake_x);
             counter++;
             scoreboard(counter);
             ate_food = 1;
             length++;
 
         }
-        else if(seg_x[0] == food_x1 && seg_y[0] == food_y1)
+        else if(snake_x[0] == food_x1 && snake_y[0] == food_y1)
         {
             foodAmt--;
             food1 = 0;
             food2 = 1;
             food3 = 0;
-            food(&length, seg_y, seg_x);
+            food(&length, snake_y, snake_x);
             counter++;
             scoreboard(counter);
             ate_food = 1;
             length++;
         }
-        else if(seg_x[0] == food_x2 && seg_y[0] == food_y2)
+        else if(snake_x[0] == food_x2 && snake_y[0] == food_y2)
         {
             foodAmt--;
             food1 = 0;
             food2 = 0;
             food3 = 1;
-            food(&length, seg_y, seg_x);
+            food(&length, snake_y, snake_x);
             counter++;
             scoreboard(counter);
             ate_food = 1;
             length++;
         }
 
-        if(seg_x[0] + dx <= 60 || seg_x[0] + dx >= 102 || seg_y[0] + dy <= 1 || seg_y[0] + dy >= 21){
-            fail(&length, seg_y, seg_x);
+        if(snake_x[0] + dx <= 60 || snake_x[0] + dx >= 102 || snake_y[0] + dy <= 1 || snake_y[0] + dy >= 21){
+            fail(&length, snake_y, snake_x);
         }
 
-        shift_snake(seg_x, seg_y, &length, dx, dy, ate_food);
-        if(self_collision(seg_x, seg_y, length)){
-            fail(&length, seg_y, seg_x);
+        shift_snake(snake_x, snake_y, &length, dx, dy, ate_food);
+        if(self_collision(snake_x, snake_y, length)){
+            fail(&length, snake_y, snake_x);
         }
         ate_food = 0;
 
@@ -379,6 +380,7 @@ void map()
 
     scoreboard(counter);
     character();
+
 }
 
 // Author: Matthew; Function to display startup message and initialize the game

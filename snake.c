@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define MAX_SNAKE 1000
+
 int apple_x = -1;
 int apple_y = -1;
 
@@ -37,8 +39,18 @@ void character()
 {
     int x = 69;
     int y = 10;
-    int prev_x = x;
-    int prev_y = y;
+    
+    static int seg_x[MAX_SNAKE];
+    static int seg_y[MAX_SNAKE];
+
+    int length = 3;
+
+    seg_x[0] = x;
+    seg_y[0] = y;
+    seg_x[1] = x - 1;
+    seg_y[1] = y;
+    seg_x[2] = x - 2;
+    seg_y[2] = y;
 
     int dx = 1;
     int dy = 0;
@@ -48,51 +60,59 @@ void character()
     nodelay(stdscr, TRUE);
     curs_set(0);
 
-    mvprintw(prev_y, prev_x, "O");
+    mvprintw(seg_y[2], seg_x[2], "o");
+    mvprintw(seg_y[1], seg_x[1], "o");
+    mvprintw(seg_y[0], seg_x[0], "@");
+
     mvprintw(10, 69, "                         ");
     mvprintw(9, 69, "                     "); 
     refresh();
 
     while(1){
         int input = getch();
+        switch(input)
+        {
+            case 'w': case 'W':
+                dx = 0, dy = -1;
+                break;
+            case 's': case 'S':
+                dx = 0, dy = 1;
+                break;
+            case 'a': case 'A':
+                dx = -1, dy = 0;
+                break;
+            case 'd': case 'D':
+                dx = 1, dy = 0;
+                break;
+            case 'q': case 'Q':
+                endwin();
+                exit(0);
+        }
         
-            switch(input)
-            {
-                case 'w': case 'W':
-                    dx = 0, dy = -1;
-                    break;
-                case 's': case 'S':
-                    dx = 0, dy = 1;
-                    break;
-                case 'a': case 'A':
-                    dx = -1, dy = 0;
-                    break;
-                case 'd': case 'D':
-                    dx = 1, dy = 0;
-                    break;
-                case 'q': case 'Q':
-                    endwin();
-                    exit(0);
-            }
-        
-
-        prev_x = x;
-        prev_y = y;
-
-        x += dx;
-        y += dy;
+        int new_x = seg_x[0] + dx;
+        int new_y = seg_y[0] + dy;
 
         if(x == apple_x && y == apple_y)
         {
             apple();
         }
 
-        if(x <= 60 || x >= 102 || y <= 0 || y >= 20){
-            fail(prev_y, prev_x);
+        if(new_x <= 60 || new_x >= 102 || new_y <= 0 || new_y >= 20){
+            fail(seg_y[0], seg_x[0]);
         }
 
-        mvprintw(prev_y, prev_x, " ");
-        mvprintw(y, x, "O");
+        for (int i = length - 1; i > 0; --i) {
+            seg_x[i] = seg_x[i - 1];
+            seg_y[i] = seg_y[i - 1];
+        }
+
+        seg_x[0] = new_x;
+        seg_y[0] = new_y;
+
+        for (int i = 1; i < length; ++i) {
+            mvprintw(seg_y[i], seg_x[i], "o");
+        }
+        mvprintw(seg_y[0], seg_x[0], "@");
         refresh();
 
         if(dy != 0)

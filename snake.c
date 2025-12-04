@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+// Global Variables
 #define buffer 1000
 #define MAX_SNAKE 20
 
@@ -15,6 +16,7 @@ int counter = 0;
 int length = 3;
 int foodAmt = 0;
 
+// Function Prototypes
 void startup();
 
 // Author: Matthew; Function to display the win screen and exit the game
@@ -26,6 +28,7 @@ void winScreen()
     mvprintw(11, 67, "Press R to restart or Q to quit.");
     refresh();
 
+    // Press R to restart or Q to quit, Win screen flashing animation
     while(1){
         attron(COLOR_PAIR(5));
         mvprintw(10, 78, "You Win");
@@ -55,6 +58,8 @@ void scoreboard(int counter)
     attron(COLOR_PAIR(7));
     mvprintw(0, 60, "Score to beat: %d", MAX_SNAKE);
     mvprintw(0, 94, "Score: %d", counter);
+
+    // Check for win condition
     if(counter == MAX_SNAKE)
     {
         winScreen();
@@ -66,6 +71,8 @@ void scoreboard(int counter)
 void food(int *length, int snake_y[], int snake_x[])
 {
     attron(COLOR_PAIR(5));
+
+    // Ensure there are always 3 food items on the screen
     while(foodAmt < 3)
     {
         if(food1)
@@ -90,6 +97,7 @@ void food(int *length, int snake_y[], int snake_x[])
             foodAmt++;
         }
 
+        // Check to ensure food does not spawn on the snake
         for(int i = 0; i < *length; ++i) {
             if(snake_y[i] == food_y && snake_x[i] == food_x )
             {
@@ -123,6 +131,7 @@ void food(int *length, int snake_y[], int snake_x[])
 // Author: Matthew; Function to handle game over scenario
 void fail(int *length, int snake_y[], int snake_x[])
 {
+    // Clear the snake from the screen with animation
     for(int i = 0; i < *length; i++)
     {
         mvprintw(snake_y[i], snake_x[i], " ");
@@ -137,6 +146,7 @@ void fail(int *length, int snake_y[], int snake_x[])
     sleep(1);
     refresh();
 
+    // Press R to restart or Q to quit, Game Over screen flashing animation
     while(1){
         mvprintw(10, 78, "Game Over!");
         refresh();
@@ -162,6 +172,7 @@ void fail(int *length, int snake_y[], int snake_x[])
 // Author: Shakil; Function to check for self-collision of the snake
 int self_collision(int snake_x[], int snake_y[], int length)
 {
+    // Check if the head collides with any part of the body
     for (int i = 1; i < length; i++){
         if (snake_x[0] == snake_x[i] && snake_y[0] == snake_y[i]){
             return 1;
@@ -177,11 +188,14 @@ void shift_snake(int snake_x[], int snake_y[], int *length, int dx, int dy, int 
     int new_y = snake_y[0] + dy;
 
     attron(COLOR_PAIR(6));
+
+    // If the snake didn't eat food, clear the tail position
     if(!ate_food)
     {
         mvprintw(snake_y[*length - 1], snake_x[*length - 1], " ");
     }
 
+    // Shift the snake's body positions
     for (int i = *length - 1; i > 0; --i) {
         snake_x[i] = snake_x[i - 1];
         snake_y[i] = snake_y[i - 1];
@@ -236,6 +250,7 @@ void character()
 
     refresh();
 
+    // Main gameplay loop
     while(1){
         int input = getch();
         switch(input)
@@ -261,6 +276,7 @@ void character()
                 exit(0);
         }
 
+        // Check for food consumption
         if(snake_x[0] == food_x && snake_y[0] == food_y)
         {
             foodAmt--;
@@ -299,16 +315,22 @@ void character()
             length++;
         }
 
+        // Check for wall collisions
         if(snake_x[0] + dx <= 60 || snake_x[0] + dx >= 102 || snake_y[0] + dy <= 1 || snake_y[0] + dy >= 21){
             fail(&length, snake_y, snake_x);
         }
 
+        // Update snake position
         shift_snake(snake_x, snake_y, &length, dx, dy, ate_food);
+
+        // Check for self-collision
         if(self_collision(snake_x, snake_y, length)){
             fail(&length, snake_y, snake_x);
         }
+
         ate_food = 0;
 
+        // Control snake speed based on direction
         if(dy != 0)
         {
             usleep(160000);
@@ -325,6 +347,7 @@ void map()
 {
     clear();
 
+    // Initialize color pairs
     start_color();
     init_pair(1, COLOR_RED, COLOR_BLACK);
     init_pair(2, COLOR_BLACK, COLOR_BLACK);
@@ -336,6 +359,8 @@ void map()
     
     int x, y, j, i;
     attron(COLOR_PAIR(2));
+
+    //Background fill black
     for(j = 0; j <= 500; j++)
     {
         for(i = 0; i <= 100; i++)
@@ -343,7 +368,10 @@ void map()
             mvprintw(i, j, " ");
         }
     }
+
     attron(COLOR_PAIR(1));
+
+    // Draw game boundaries with animation
     for(x = 60; x <= 100; x++)
     {
         mvprintw(1, x + 1, "-");
@@ -365,6 +393,8 @@ void map()
 
     noecho();
     nodelay(stdscr, TRUE);
+
+    // Flashing "Press any key to start..." message
     while(1){
         mvprintw(11, 69, "Press any key to start... ");
         refresh();
@@ -406,8 +436,7 @@ int main(){
 
     initscr();
     clear();
-    
-    srand((unsigned int)time(NULL));
+
     startup();
 
     endwin();
